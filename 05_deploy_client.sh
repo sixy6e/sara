@@ -65,8 +65,9 @@ npm install --prefix ./sara.client/
 
 # Generate the client configuration from config file
 echo "============================================================================"
-json -I -f sara.client/src/config.json -e 'this.restoServerUrl="'${SERVER_PROTOCOL}'://'${SARA_SERVER_URL}${SARA_SERVER_SUB}${SARA_SERVER_VERSION_ENDPOINT}'/"'
-json -I -f sara.client/src/config.json -e 'this.contactEmail="'${CONTACT_EMAIL}'"'
+json -f sara.client/src/config.json.tpl \
+  -e 'this.restoServerUrl="'${SERVER_PROTOCOL}'://'${SARA_SERVER_URL}${SARA_SERVER_SUB}${SARA_SERVER_VERSION_ENDPOINT}'/"' \
+  -e 'this.contactEmail="'${CONTACT_EMAIL}'"' >sara.client/src/config.json
 
 # Run grunt
 grunt --base sara.client/ --gruntfile sara.client/Gruntfile.js build
