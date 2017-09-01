@@ -79,6 +79,9 @@ CONTACT_EMAIL=earth.observation@ga.gov.au
 # Timezone
 TIMEZONE=Australia/Sydney
 
+WWW_USER=nginx:nginx
+WWW_STREAM_METHOD=nginx
+
 ######################################################
 # UNUSUED FOR SARA - JUST LEAVE BELOW VALUES UNTOUCHED
 #######################################################

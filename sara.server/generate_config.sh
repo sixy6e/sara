@@ -73,7 +73,7 @@ return array(
         'resetPasswordUrl' => '${CLIENT_ENDPOINT_RESET_PASSWORD}',
         'htmlSearchUrl' => '${CLIENT_ENDPOINT_HTML_SEARCH_URL}',
         'uploadDirectory' => '${UPLOAD_DIRECTORY}',
-        'streamMethod' => 'nginx',
+        'streamMethod' => '${WWW_STREAM_METHOD}',
         'userAutoValidation' => true,
         'corsWhiteList' => array(
             'null',
