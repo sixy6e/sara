@@ -79,6 +79,10 @@ mkdir -p ${SARA_SERVER_TARGET_DIR}
 echo " ==> Deploy resto in ${SARA_SERVER_ENDPOINT}"
 ${SRC_DIR}/resto/_install/deploy.sh -s ${SRC_DIR}/resto -t ${SARA_SERVER_ENDPOINT}
 
+# Fix RewriteBase path
+ESCAPED_SARA_PATH=$(echo "${SARA_SERVER_SUB}${SARA_SERVER_VERSION_ENDPOINT}" | sed -r -e 's/\//\\\//g')
+sed -i -r -e "s/\/resto\//${ESCAPED_SARA_PATH}\//g" ${SARA_SERVER_ENDPOINT}/.htaccess
+
 echo " ==> Copy models under ${SARA_SERVER_ENDPOINT}/include/resto/Models"
 cp -R ${SRC_DIR}/sara.server/Models/*.php ${SARA_SERVER_ENDPOINT}/include/resto/Models/
 
