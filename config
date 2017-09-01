@@ -43,8 +43,11 @@ DATA_ROOT_PATH=/g/data3/fj7/Copernicus/
 ##
 POSTGRESQL_DATA_DIRECTORY=/local/pgsql/9.5/data
 ##
+SARA_DB_HOST=localhost
 SARA_DB_NAME=sara
 SARA_DB_SCHEMA_NAME=resto
+ITAG_DB_HOST=localhost
+
 # CentOS 6 comes with PHP 5.3.3 - bcrypt cannot be used 
 USE_BCRYPT=NO
 UPLOAD_DIRECTORY=/tmp/resto_uploads

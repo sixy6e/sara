@@ -83,6 +83,7 @@ return array(
     ),
     'database' => array(
         'driver' => 'PostgreSQL',
+        'host' => '${SARA_DB_HOST}',
         'dbname' => '${SARA_DB_NAME}',
         'port' => 5432,
         'resultsPerPage' => 20,
@@ -133,7 +134,7 @@ return array(
             'options' => array(
                 'database' => array(
                     'dbname' => 'itag',
-                    //'host' => 'localhost',
+                    'host' => '${ITAG_DB_HOST}',
                     'user' => '${ITAG_USER}',
                     'password' => '${ITAG_PASSWORD}'
                 )
@@ -146,7 +147,7 @@ return array(
                 'iTag' => array(
                     'database' => array(
                         'dbname' => 'itag',
-                        //'host' => 'localhost',
+                        'host' => '${ITAG_DB_HOST}',
                         'user' => '${ITAG_USER}',
                         'password' => '${ITAG_PASSWORD}'
                     ),
