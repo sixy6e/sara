@@ -76,6 +76,7 @@ cp -a sara.client/dist/. ${SARA_CLIENT_TARGET_DIR}
 
 echo " ==> Set ${SARA_CLIENT_TARGET_DIR} rights to ${WWW_USER}"
 chown -R ${WWW_USER} ${SARA_CLIENT_TARGET_DIR}
+selinuxenabled && restorecon -R ${SARA_CLIENT_TARGET_DIR}
 
 echo " Done !"
 
