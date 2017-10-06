@@ -76,6 +76,9 @@ else
   ${SRC_DIR}/resto/_install/installDB.sh -d ${SARA_DB_NAME} -S ${SARA_DB_SCHEMA_NAME} -u ${RESTO_USER} -p ${RESTO_PASSWORD} -s ${DB_SUPERUSER}
 fi
 
+echo " ==> Update st_splitdateline function"
+${SRC_DIR}/sara.server/update_splitdateline.sh -d ${SARA_DB_NAME} -u ${DB_SUPERUSER}
+
 echo "====> Update database for Sentinel-3"
 psql -U ${DB_SUPERUSER} -d ${SARA_DB_NAME} << EOF
 INSERT INTO ${SARA_DB_SCHEMA_NAME}.keywords (name, value, lang, type) VALUES ('s3', 'S3A|S3B','**', 'platform');
