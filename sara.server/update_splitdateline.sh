@@ -181,7 +181,12 @@ BEGIN
       ST_Intersection( ST_MakeEnvelope(-180,-90,180,90, 4326),geom_out ),
       ST_Translate(ST_Intersection( ST_MakeEnvelope(180,-90,540,90, 4326),geom_out ),-360,0)
       );
-    
+
+    -- Only keep the POLYGONs, not the LINESTRINGS
+    IF ST_IsCollection(geom_out) THEN
+      SELECT INTO geom_out ST_CollectionExtract(geom_out,3);
+    END IF;
+     
     -- Support multipolygon
     IF pp = 1 THEN
       SELECT INTO multi_geom_out geom_out;
