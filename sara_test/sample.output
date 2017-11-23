@@ -1,0 +1,43 @@
+--- SARA Query Test (could take a few mins) ---
+--- Results summary ---
+Thread: 1
+Query: https://copernicus-dev.nci.org.au//sara.server/1.0/api/collections//search.json?productType=GRD&startDate=2017-04-18&completionDate=2017-08-02&geometry=POLYGON((116.64 -11.16, 138.92 -11.16, 138.92 7.33, 116.64 7.33, 116.64 -11.16))&index=1&maxRecords=50
+Results:  28.0 seconds used to find 1575 products
+---
+Thread: 2
+Query: https://copernicus-dev.nci.org.au//sara.server/1.0/api/collections//search.json?productType=L1C&startDate=2017-02-19&completionDate=2017-08-26&geometry=POLYGON((124.45 -61.22, 174.94 -61.22, 174.94 12.38, 124.45 12.38, 124.45 -61.22))&index=1&maxRecords=50
+Results:  4.0 seconds used to find 0 products
+---
+Thread: 3
+Query: https://copernicus-dev.nci.org.au//sara.server/1.0/api/collections//search.json?productType=SL_1_RBT___&startDate=2017-02-18&completionDate=2017-08-20&geometry=POLYGON((51.26 -59.26, 84.81 -59.26, 84.81 4.99, 51.26 4.99, 51.26 -59.26))&index=1&maxRecords=50
+Results:  480.0 seconds used to find 11672 products
+---
+Thread: 4
+Query: https://copernicus-dev.nci.org.au//sara.server/1.0/api/collections//search.json?productType=SR_2_LAN___&startDate=2017-04-29&completionDate=2017-10-15&geometry=POLYGON((102.72 -33.71, 152.45 -33.71, 152.45 12.11, 102.72 12.11, 102.72 -33.71))&index=1&maxRecords=50
+Results:  3.0 seconds used to find 0 products
+---
+Thread: 5
+Query: https://copernicus-dev.nci.org.au//sara.server/1.0/api/collections//search.json?productType=SR_1_SRA___&startDate=2016-11-15&completionDate=2017-06-30&geometry=POLYGON((115.64 -89.87, 154.03 -89.87, 154.03 -31.76, 115.64 -31.76, 115.64 -89.87))&index=1&maxRecords=50
+Results:  390.0 seconds used to find 6089 products
+---
+Thread: 6
+Query: https://copernicus-dev.nci.org.au//sara.server/1.0/api/collections//search.json?productType=SR_1_SRA___&startDate=2016-10-14&completionDate=2017-04-30&geometry=POLYGON((111.11 -88.34, 170.60 -88.34, 170.60 -25.25, 111.11 -25.25, 111.11 -88.34))&index=1&maxRecords=50
+Results:  302.0 seconds used to find 5176 products
+---
+Thread: 7
+Query: https://copernicus-dev.nci.org.au//sara.server/1.0/api/collections//search.json?productType=SR_1_SRA_BS&startDate=2017-10-05&completionDate=2017-11-13&geometry=POLYGON((55.27 -42.94, 117.18 -42.94, 117.18 -5.07, 55.27 -5.07, 55.27 -42.94))&index=1&maxRecords=50
+Results:  0.0 seconds used to find 0 products
+---
+Thread: 8
+Query: https://copernicus-dev.nci.org.au//sara.server/1.0/api/collections//search.json?productType=SL_2_LST___&startDate=2017-07-15&completionDate=2017-09-07&geometry=POLYGON((102.30 -51.63, 122.27 -51.63, 122.27 12.72, 102.30 12.72, 102.30 -51.63))&index=1&maxRecords=50
+Results:  37.0 seconds used to find 1109 products
+---
+Thread: 9
+Query: https://copernicus-dev.nci.org.au//sara.server/1.0/api/collections//search.json?productType=RAW&startDate=2016-02-11&completionDate=2016-09-01&geometry=POLYGON((93.89 -67.45, 123.48 -67.45, 123.48 -23.03, 93.89 -23.03, 93.89 -67.45))&index=1&maxRecords=50
+Results:  4.0 seconds used to find 309 products
+---
+Thread: 10
+Query: https://copernicus-dev.nci.org.au//sara.server/1.0/api/collections//search.json?productType=SR_2_WAT___&startDate=2017-10-22&completionDate=2017-11-11&geometry=POLYGON((-171.29 -61.84, -162.73 -61.84, -162.73 24.17, -171.29 24.17, -171.29 -61.84))&index=1&maxRecords=50
+Results:  0.0 seconds used to find 0 products
+---
+
