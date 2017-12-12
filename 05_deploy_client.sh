@@ -1,14 +1,18 @@
 #! /bin/bash
 #
 # SARA - Sentinel Australia Regional Access
-# 
+#
 # Deployment script
 #
 # Author : Jérôme Gasperi (https://github.com/jjrom)
 # Date   : 2017.02.19
 #
 #
-#CONFIG=config
+
+set -eu
+set -o pipefail
+
+CONFIG=
 WWW_USER=nginx:nginx
 PWD=`pwd`
 SRC_DIR=`pwd`

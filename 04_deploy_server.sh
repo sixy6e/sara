@@ -8,7 +8,11 @@
 # Date   : 2017.02.19
 #
 #
-#CONFIG=config
+
+set -eu
+set -o pipefail
+
+CONFIG=
 FORCE=NO
 WWW_USER=nginx:nginx
 PWD=`pwd`
