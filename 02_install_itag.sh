@@ -8,6 +8,10 @@
 # Date   : 2017.02.19
 #
 #
+
+set -eu
+set -o pipefail
+
 #CONFIG=config
 PWD=`pwd`
 SRC_DIR=`pwd`
@@ -57,6 +61,11 @@ fi
 
 # Source config file
 . ${CONFIG}
+
+DB_HOST_OPT=
+if [ -n "${ITAG_DB_HOST}" -a "${ITAG_DB_HOST}" != "localhost" ] ; then
+  DB_HOST_OPT="-H ${ITAG_DB_HOST}"
+fi
 
 # Paths are based on $SRCDIR
 ITAG_DATA=${ITAG_DIR}/data
@@ -132,13 +141,13 @@ else
 fi
 
 # Create database
-$ITAG_HOME/_install/installDB.sh -F -p ${ITAG_PASSWORD} -s ${DB_SUPERUSER}
+$ITAG_HOME/_install/installDB.sh -F -p ${ITAG_PASSWORD} -s ${DB_SUPERUSER} ${DB_HOST_OPT}
 
 # General datasources
-$ITAG_HOME/_install/installDatasources.sh -F -D ${ITAG_DATA} -s ${DB_SUPERUSER}
+$ITAG_HOME/_install/installDatasources.sh -F -D ${ITAG_DATA} -s ${DB_SUPERUSER} ${DB_HOST_OPT}
 
 # Gazetteer
-$ITAG_HOME/_install/installGazetteerDB.sh -F -D ${ITAG_DATA} -s ${DB_SUPERUSER}
+$ITAG_HOME/_install/installGazetteerDB.sh -F -D ${ITAG_DATA} -s ${DB_SUPERUSER} ${DB_HOST_OPT}
 
 echo "====> End of itag installation";
 
