@@ -1,7 +1,7 @@
 #! /bin/bash
 #
 # SARA - Sentinel Australia Regional Access
-# 
+#
 # Deployment script
 #
 # Author : Jérôme Gasperi (https://github.com/jjrom)
@@ -17,7 +17,6 @@ FORCE=NO
 WWW_USER=nginx:nginx
 PWD=`pwd`
 SRC_DIR=`pwd`
-LOCALHOST=localhost
 function showUsage {
     echo ""
     echo "   SARA - Sentinel Australia Regional Access server deployment"
@@ -97,31 +96,27 @@ chmod 0600 ${SARA_SERVER_ENDPOINT}/include/config.php
 echo " ==> Set ${SARA_SERVER_ENDPOINT} rights to ${WWW_USER}"
 chown -R ${WWW_USER} ${SARA_SERVER_ENDPOINT}
 
-echo " ==> Update property mappings for collections"
+echo " ==> Create property mappings for collections"
 
-# change JSON file properties
-for i in {1..3};do 
-	fileName=${SRC_DIR}/sara.server/collections/"S$i.json"; 
-        outName=${SRC_DIR}/sara.server/collections/"SARA-S$i.json";
-	awk -v SEN=$i -v PATH=$DATA_ROOT_PATH -v PROTO=$SERVER_PROTOCOL -v SERVER=$SARA_SERVER_URL '{if((/"quicklook"/)||(/"thumbnail"/)||(/"resource"/)){if(/"resource"/){print "\t\"resource\" : \""PATH"Sentinel-"SEN"{:resource:}/{:productIdentifier:}.zip\""}; if(/"quicklook"/){print "\t\"quicklook\" : \""PROTO"://"SERVER"/data/Sentinel-"SEN"{:resource:}/{:productIdentifier:}.png\","}; if(/"thumbnail"/){print "\t\"thumbnail\" : \""PROTO"://"SERVER"/data/Sentinel-"SEN"{:resource:}/{:productIdentifier:}.png\","};}else{print $0;}}' $fileName > $outName; done
+curl_cmd=("curl" "--silent" "--show-error" "--fail" "--header" "Host: ${SARA_SERVER_URL}")
+[ "${SERVER_PROTOCOL}" == "https" ] && curl_cmd+=("-k")
 
-if [ "${SERVER_PROTOCOL}" == "https" ]
-then
-    curlcmd="curl -k"
-else
-    curlcmd="curl"
-fi
+uri_base="${SERVER_PROTOCOL}://${RESTO_ADMIN_USER}:${RESTO_ADMIN_PASSWORD}@localhost${SARA_SERVER_SUB}${SARA_SERVER_VERSION_ENDPOINT}"
 
-echo " ==> Install S1 collection"
-$curlcmd -X POST -H "Content-Type: application/json" -d @${SRC_DIR}/sara.server/collections/SARA-S1.json ${SERVER_PROTOCOL}://${RESTO_ADMIN_USER}:${RESTO_ADMIN_PASSWORD}@${LOCALHOST}${SARA_SERVER_SUB}${SARA_SERVER_VERSION_ENDPOINT}/collections
-echo ""
+for i in {1..3};do
+  coll_id="S${i}"
+  src_path=${SRC_DIR}/sara.server/collections/"${coll_id}.json";
+  out_path=${SRC_DIR}/sara.server/collections/"SARA-${coll_id}.json";
+  awk -v SEN=$i -v PATH=$DATA_ROOT_PATH -v PROTO=$SERVER_PROTOCOL -v SERVER=$SARA_SERVER_URL '{if((/"quicklook"/)||(/"thumbnail"/)||(/"resource"/)){if(/"resource"/){print "\t\"resource\" : \""PATH"Sentinel-"SEN"{:resource:}/{:productIdentifier:}.zip\""}; if(/"quicklook"/){print "\t\"quicklook\" : \""PROTO"://"SERVER"/data/Sentinel-"SEN"{:resource:}/{:productIdentifier:}.png\","}; if(/"thumbnail"/){print "\t\"thumbnail\" : \""PROTO"://"SERVER"/data/Sentinel-"SEN"{:resource:}/{:productIdentifier:}.png\","};}else{print $0;}}' $src_path > $out_path
 
-echo " ==> Install S2 collection"
-$curlcmd -X POST -H "Content-Type: application/json" -d @${SRC_DIR}/sara.server/collections/SARA-S2.json ${SERVER_PROTOCOL}://${RESTO_ADMIN_USER}:${RESTO_ADMIN_PASSWORD}@${LOCALHOST}${SARA_SERVER_SUB}${SARA_SERVER_VERSION_ENDPOINT}/collections
-echo ""
-
-echo " ==> Install S3 collection"
-$curlcmd -X POST -H "Content-Type: application/json" -d @${SRC_DIR}/sara.server/collections/SARA-S3.json ${SERVER_PROTOCOL}://${RESTO_ADMIN_USER}:${RESTO_ADMIN_PASSWORD}@${LOCALHOST}${SARA_SERVER_SUB}${SARA_SERVER_VERSION_ENDPOINT}/collections
-echo ""
+  echo " ==> Install ${coll_id} collection"
+  if "${curl_cmd[@]}" "${uri_base}/api/collections/${coll_id}/describe.json" &>/dev/null ; then
+    echo "Already exists -- skipped"
+  else
+    "${curl_cmd[@]}" -X POST -H "Content-Type: application/json" -d @${out_path} "${uri_base}/collections"
+    echo ""
+  fi
+  touch "${out_path}.ok"
+done
 
 echo " Done !"
