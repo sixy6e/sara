@@ -18,7 +18,7 @@ SARA_SERVER_VERSION_ENDPOINT=/1.0
 
 ##
 # Absolute paths of the target directory where server and client are deployed
-# These paths are accessible by nginx and aliased accordingly in nginx conf
+# These paths are accessible by the web server
 ##
 SARA_SERVER_TARGET_DIR=/usr/share/nginx/html/sara.server
 SARA_CLIENT_TARGET_DIR=/usr/share/nginx/html/sara.client
@@ -32,23 +32,25 @@ CLIENT_ENDPOINT_HTML_SEARCH_URL=$SERVER_PROTOCOL://$SARA_SERVER_URL/sara.client/
 ##
 # Copernicus data repository
 # The DATA_ROOT_PATH is the absolute path to the Copernicus directory
-# The SARA_DATA_URL is the alias name in nginx to the DATA_ROOT_PATH
+# The SARA_DATA_URL is the web server alias name for DATA_ROOT_PATH
 ##
 # WARNING ! The trailing "/" is mandatory
 SARA_DATA_URL=/data/
-DATA_ROOT_PATH=/g/data3/fj7/Copernicus/
+DATA_ROOT_PATH=/g/data/fj7/Copernicus/
 
 ##
 # resto/itag configuration
 ##
 POSTGRESQL_DATA_DIRECTORY=/local/pgsql/9.5/data
 ##
+DB_SUPERUSER=postgres
 SARA_DB_HOST=localhost
 SARA_DB_NAME=sara
 SARA_DB_SCHEMA_NAME=resto
 ITAG_DB_HOST=localhost
 
 # CentOS 6 comes with PHP 5.3.3 - bcrypt cannot be used 
+# Neither can CentOS 7 (PHP 5.4); requires PHP 5.5 or later
 USE_BCRYPT=NO
 UPLOAD_DIRECTORY=/tmp/resto_uploads
 
@@ -57,7 +59,6 @@ UPLOAD_DIRECTORY=/tmp/resto_uploads
 # [WARNING] Names should be leaved untouched, but password should definitively be changed for security reason
 ##
 
-DB_SUPERUSER=postgres
 RESTO_USER=resto
 RESTO_PASSWORD=resto
 ITAG_USER=itag
@@ -85,9 +86,10 @@ TIMEZONE=Australia/Sydney
 WWW_USER=nginx:nginx
 WWW_STREAM_METHOD=nginx
 
+
 ######################################################
 # UNUSUED FOR SARA - JUST LEAVE BELOW VALUES UNTOUCHED
-#######################################################
+######################################################
 SMTP_HOST=xxx.xxxx
 SMTP_PORT=465
 SMTP_SECURE_PROTOCOL=ssl
