@@ -69,9 +69,11 @@ RESTO_ADMIN_PASSWORD=admin
 # The passphrase is used to encrypt token
 PASSPHRASE=thisisapassphrase
 
-# Directory where itag data are downloaded during installation
-# This directory should be removed after iTag installation
-ITAG_DIR=/tmp/itag
+# Directory where itag ingest data is located
+ITAG_DATA=/tmp/itag-data
+
+# Path to checked out itag source repository
+ITAG_HOME=/usr/local/itag
 
 ##
 # Email configuration 

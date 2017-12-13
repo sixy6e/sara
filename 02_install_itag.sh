@@ -67,21 +67,9 @@ if [ -n "${ITAG_DB_HOST}" -a "${ITAG_DB_HOST}" != "localhost" ] ; then
   DB_HOST_OPT="-H ${ITAG_DB_HOST}"
 fi
 
-# Paths are based on $SRCDIR
-ITAG_DATA=${ITAG_DIR}/data
-ITAG_HOME=${ITAG_DIR}/itag
-
 echo "###########################"
 echo "# Install iTag database    "
 echo "###########################"
-
-if [ -d "${ITAG_DIR}" ];
-then
-  echo "${ITAG_DIR} exits - skipping creation"
-else
-  echo "Create ${ITAG_DIR} directory"
-  mkdir -p ${ITAG_DIR}  
-fi
 
 if [ -d "${ITAG_DATA}" ];
 then
@@ -92,7 +80,7 @@ else
   echo "";
   echo "====> Retrieve iTag data from internet";
   echo "";
-  mkdir ${ITAG_DATA}
+  mkdir -p ${ITAG_DATA}
   cd ${ITAG_DATA}
 
   wget http://www.naturalearthdata.com/http//www.naturalearthdata.com/download/10m/physical/ne_10m_coastline.zip
@@ -135,9 +123,7 @@ else
   echo "";
   echo "====> Retrieve iTag sources from internet";
   echo "";
-  cd $ITAG_DIR
-  git clone https://github.com/jjrom/itag.git
-  cd ${PWD}
+  git clone https://github.com/jjrom/itag.git ${ITAG_HOME}
 fi
 
 # Create database

@@ -66,7 +66,7 @@ if [ -n "${ITAG_DB_HOST}" -a "${ITAG_DB_HOST}" != "localhost" ] ; then
   DB_HOST_OPT="-h ${ITAG_DB_HOST}"
 fi
 
-LANDCOVER_DATA=${ITAG_DIR}/data
+LANDCOVER_DATA=${ITAG_DATA}
 LANDCOVER_SQL="2016.11.09-itag_landcover_curated.sql"
 
 if [ -d "${LANDCOVER_DATA}" ];
