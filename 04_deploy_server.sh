@@ -111,8 +111,15 @@ for i in {1..3};do
 
   echo " ==> Install ${coll_id} collection"
   if "${curl_cmd[@]}" "${uri_base}/api/collections/${coll_id}/describe.json" &>/dev/null ; then
-    echo "Already exists -- skipped"
+    if [ "${FORCE}" == "YES" ] ; then
+      echo "Updating existing collection"
+      "${curl_cmd[@]}" -X PUT -H "Content-Type: application/json" -d @${out_path} "${uri_base}/collections/${coll_id}"
+      echo ""
+    else
+      echo "Already exists -- skipped"
+    fi
   else
+    echo "Creating new collection"
     "${curl_cmd[@]}" -X POST -H "Content-Type: application/json" -d @${out_path} "${uri_base}/collections"
     echo ""
   fi
