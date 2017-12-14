@@ -107,7 +107,10 @@ for i in {1..3};do
   coll_id="S${i}"
   src_path=${SRC_DIR}/sara.server/collections/"${coll_id}.json";
   out_path=${SRC_DIR}/sara.server/collections/"SARA-${coll_id}.json";
-  awk -v SEN=$i -v PATH=$DATA_ROOT_PATH -v PROTO=$SERVER_PROTOCOL -v SERVER=$SARA_SERVER_URL '{if((/"quicklook"/)||(/"thumbnail"/)||(/"resource"/)){if(/"resource"/){print "\t\"resource\" : \""PATH"Sentinel-"SEN"{:resource:}/{:productIdentifier:}.zip\""}; if(/"quicklook"/){print "\t\"quicklook\" : \""PROTO"://"SERVER"/data/Sentinel-"SEN"{:resource:}/{:productIdentifier:}.png\","}; if(/"thumbnail"/){print "\t\"thumbnail\" : \""PROTO"://"SERVER"/data/Sentinel-"SEN"{:resource:}/{:productIdentifier:}.png\","};}else{print $0;}}' $src_path > $out_path
+  jq ".propertiesMapping = {
+    \"quicklook\": \"${SERVER_PROTOCOL}://${SARA_SERVER_URL}${SARA_DATA_URL}Sentinel-${i}{:resource:}/{:productIdentifier:}.png\",
+    \"resource\": \"${DATA_ROOT_PATH}Sentinel-${i}{:resource:}/{:productIdentifier:}.zip\"
+  } | .propertiesMapping.thumbnail = .propertiesMapping.quicklook" ${src_path} >${out_path}
 
   echo " ==> Install ${coll_id} collection"
   if "${curl_cmd[@]}" "${uri_base}/api/collections/${coll_id}/describe.json" &>/dev/null ; then
