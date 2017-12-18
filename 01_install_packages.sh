@@ -116,8 +116,8 @@ cat <<EOF > /etc/nginx/default.d/sara.conf
     root /;     
   }
   # Quicklook files
-  location ${SARA_DATA_URL} {
-    alias ${DATA_ROOT_PATH};
+  location ${DATA_ROOT_URL_PATH} {
+    alias ${DATA_ROOT_DIR};
   }
   location ~ /\.ht {
     deny all;

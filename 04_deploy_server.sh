@@ -101,29 +101,37 @@ echo " ==> Create property mappings for collections"
 curl_cmd=("curl" "--silent" "--show-error" "--fail" "--header" "Host: ${SARA_SERVER_URL}")
 [ "${SERVER_PROTOCOL}" == "https" ] && curl_cmd+=("-k")
 
-uri_base="${SERVER_PROTOCOL}://${RESTO_ADMIN_USER}:${RESTO_ADMIN_PASSWORD}@localhost${SARA_SERVER_SUB}${SARA_SERVER_VERSION_ENDPOINT}"
+api_base_url="${SERVER_PROTOCOL}://${RESTO_ADMIN_USER}:${RESTO_ADMIN_PASSWORD}@localhost${SARA_SERVER_SUB}${SARA_SERVER_VERSION_ENDPOINT}"
+
+if [ -n "${EXTERNAL_DATA_HOST}" ] ; then
+  quicklook_base_url="${SERVER_PROTOCOL}://${EXTERNAL_DATA_HOST}${DATA_ROOT_URL_PATH}"
+  resource_base_url="${SERVER_PROTOCOL}://${EXTERNAL_DATA_HOST}${DATA_ROOT_URL_PATH}"
+else
+  quicklook_base_url="${SERVER_PROTOCOL}://${SARA_SERVER_URL}${DATA_ROOT_URL_PATH}"
+  resource_base_url="${DATA_ROOT_DIR}"
+fi
 
 for i in {1..3};do
   coll_id="S${i}"
   src_path=${SRC_DIR}/sara.server/collections/"${coll_id}.json";
   out_path=${SRC_DIR}/sara.server/collections/"SARA-${coll_id}.json";
   jq ".propertiesMapping = {
-    \"quicklook\": \"${SERVER_PROTOCOL}://${SARA_SERVER_URL}${SARA_DATA_URL}Sentinel-${i}{:resource:}/{:productIdentifier:}.png\",
-    \"resource\": \"${DATA_ROOT_PATH}Sentinel-${i}{:resource:}/{:productIdentifier:}.zip\"
+    \"quicklook\": \"${quicklook_base_url}/Sentinel-${i}{:resource:}/{:productIdentifier:}.png\",
+    \"resource\": \"${resource_base_url}/Sentinel-${i}{:resource:}/{:productIdentifier:}.zip\"
   } | .propertiesMapping.thumbnail = .propertiesMapping.quicklook" ${src_path} >${out_path}
 
   echo " ==> Install ${coll_id} collection"
-  if "${curl_cmd[@]}" "${uri_base}/api/collections/${coll_id}/describe.json" &>/dev/null ; then
+  if "${curl_cmd[@]}" "${api_base_url}/api/collections/${coll_id}/describe.json" &>/dev/null ; then
     if [ "${FORCE}" == "YES" ] ; then
       echo "Updating existing collection"
-      "${curl_cmd[@]}" -X PUT -H "Content-Type: application/json" -d @${out_path} "${uri_base}/collections/${coll_id}"
+      "${curl_cmd[@]}" -X PUT -H "Content-Type: application/json" -d @${out_path} "${api_base_url}/collections/${coll_id}"
       echo ""
     else
       echo "Already exists -- skipped"
     fi
   else
     echo "Creating new collection"
-    "${curl_cmd[@]}" -X POST -H "Content-Type: application/json" -d @${out_path} "${uri_base}/collections"
+    "${curl_cmd[@]}" -X POST -H "Content-Type: application/json" -d @${out_path} "${api_base_url}/collections"
     echo ""
   fi
   touch "${out_path}.ok"

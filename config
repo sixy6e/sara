@@ -31,12 +31,15 @@ CLIENT_ENDPOINT_HTML_SEARCH_URL=$SERVER_PROTOCOL://$SARA_SERVER_URL/sara.client/
 
 ##
 # Copernicus data repository
-# The DATA_ROOT_PATH is the absolute path to the Copernicus directory
-# The SARA_DATA_URL is the web server alias name for DATA_ROOT_PATH
+# DATA_ROOT_DIR is the absolute path to the Copernicus directory
+# DATA_ROOT_URL_PATH is the root relative URL to the mapping for DATA_ROOT_DIR
 ##
-# WARNING ! The trailing "/" is mandatory
-SARA_DATA_URL=/data/
-DATA_ROOT_PATH=/g/data/fj7/Copernicus/
+DATA_ROOT_DIR=/g/data/fj7/Copernicus
+DATA_ROOT_URL_PATH=/data
+
+# Whether to redirect downloads to an external DTN
+EXTERNAL_DATA_HOST=
+REDIRECT_EXTERNAL_DOWNLOAD=false
 
 ##
 # resto/itag configuration
