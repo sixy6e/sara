@@ -70,7 +70,7 @@ return array(
         'debug' => false,
         'timezone' => '${TIMEZONE}',
         'protocol' => '${SERVER_PROTOCOL}',
-        'storeQuery' => true,
+        'storeQuery' => array('download'),
         'sharedLinkDuration' => 86400,
         'tokenDuration' => 604800,
         'passphrase' => '${PASSPHRASE}',
