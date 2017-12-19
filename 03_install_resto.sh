@@ -14,7 +14,6 @@ set -o pipefail
 
 #CONFIG=config
 FORCE=NO
-WWW_USER=www-data:www-data
 SRC_DIR="${0%/*}"
 
 function showUsage {

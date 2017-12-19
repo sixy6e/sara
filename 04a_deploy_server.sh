@@ -14,7 +14,6 @@ set -o pipefail
 
 CONFIG=
 FORCE=NO
-WWW_USER=nginx:nginx
 PWD=`pwd`
 SRC_DIR=`pwd`
 function showUsage {
@@ -91,9 +90,12 @@ cp -R ${SRC_DIR}/sara.server/Models/*.php ${SARA_SERVER_ENDPOINT}/include/resto/
 
 echo " ==> Use ${CONFIG} file to generate ${SARA_SERVER_ENDPOINT}/include/config.php";
 ${SRC_DIR}/sara.server/generate_config.sh -C ${CONFIG} > ${SARA_SERVER_ENDPOINT}/include/config.php
-chmod 0600 ${SARA_SERVER_ENDPOINT}/include/config.php
 
-echo " ==> Set ${SARA_SERVER_ENDPOINT} rights to ${WWW_USER}"
-chown -R ${WWW_USER} ${SARA_SERVER_ENDPOINT}
+echo " ==> Set ${SARA_SERVER_ENDPOINT} file permissions"
+chmod -R a+rX ${SARA_SERVER_ENDPOINT}
+chown -R root:root ${SARA_SERVER_ENDPOINT}
+chmod 0640 ${SARA_SERVER_ENDPOINT}/include/config.php
+chgrp ${WWW_GROUP} ${SARA_SERVER_ENDPOINT}/include/config.php
+selinuxenabled && restorecon -R ${SARA_SERVER_ENDPOINT}
 
 echo " Done !"
