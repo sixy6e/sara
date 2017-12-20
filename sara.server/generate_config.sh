@@ -82,9 +82,7 @@ return array(
         'redirectExternalDownload' => ${REDIRECT_EXTERNAL_DOWNLOAD},
         'userAutoValidation' => true,
         'corsWhiteList' => array(
-            'null',
-            'localhost',
-            'localhost:8100'
+            '${SARA_SERVER_URL}',
         )
     ),
     'database' => array(
