@@ -155,8 +155,15 @@ return array(
                         'password' => '${ITAG_PASSWORD}'
                     ),
                     'taggers' => array(
-                        'Political' => array(),
-                        'LandCover' => array()
+EOF
+
+for tagger in ${ITAG_TAGGERS} ; do
+cat << EOF
+                        '${tagger}' => array(),
+EOF
+done
+
+cat << EOF
                     )
                 )
             )

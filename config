@@ -78,6 +78,9 @@ ITAG_DATA=/tmp/itag-data
 # Path to checked out itag source repository
 ITAG_HOME=/usr/local/itag
 
+# Which iTag modules to enable.
+ITAG_TAGGERS="Political LandCover"
+
 ##
 # Email configuration 
 # Used by resto to send registration confirmation and reset password link
