@@ -1,0 +1,21 @@
+{
+    "name": "MERFSG1P",
+    "model": "RestoModel_default",
+    "status": "public",
+    "rights":{
+        "download":1,
+        "visualize":1
+    },
+    "osDescription": {
+        "en": {
+            "ShortName": "MER_FSG_1P",
+            "LongName": "MERIS Full Swath Georeferenced Level 1P",
+            "Description": "MERIS Full Resolution Full Swath Geo/Ortho-corrected Top of Atmosphere Radiance",
+            "Tags": "CSIRO MERIS Envisat",
+            "Developer": "CSIRO",
+            "Contact": "edward.king@csiro.au",
+            "Query": "Australia",
+            "Attribution": "CSIRO"
+        }
+    }
+}

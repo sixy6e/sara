@@ -1,0 +1,21 @@
+{
+    "name": "GAARD",
+    "model": "RestoModel_default",
+    "status": "public",
+    "rights":{
+        "download":1,
+        "visualize":1
+    },
+    "osDescription": {
+        "en": {
+            "ShortName": "GA_ARD",
+            "LongName": "Geoscience Australia Analysis Ready Data",
+            "Description": "Geoscience Australia's Analysis Ready Data product contains BRDF Corrected and BRDF + Terrain Illumination corrected imagery for VIS-NIR spectral data, and Surface Brightness Temperature for platforms carrying Thermal instruments.",
+            "Tags": "GA ARD Setinel-2 Landsat",
+            "Developer": "Geoscience Australia",
+            "Contact": "joshua.sixsmith@ga.gov.au",
+            "Query": "Australia",
+            "Attribution": "Geoscience Australia"
+        }
+    }
+}
