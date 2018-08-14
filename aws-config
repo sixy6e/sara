@@ -1,0 +1,95 @@
+#####################################
+#        SARA configuration         #
+#####################################
+
+##
+# Endpoint to resto API is built with the following format
+#
+#  ${SERVER_PROTOCOL}://${SARA_SERVER_URL}${SARA_SERVER_SUB}${SARA_SERVER_VERSION_ENDPOINT}
+#
+# Thus default values gives:
+#
+#  https://copernicus-dev.nci.org.au/sara.server/1.0
+##
+SERVER_PROTOCOL=http
+SARA_SERVER_URL=localhost
+SARA_SERVER_SUB=/resto
+SARA_SERVER_VERSION_ENDPOINT=
+
+##
+# Absolute paths of the target directory where server and client are deployed
+# These paths are accessible by nginx and aliased accordingly in nginx conf
+##
+SARA_SERVER_TARGET_DIR=/home/ec2-user/COPHUB/RESTO-TARGET
+SARA_CLIENT_TARGET_DIR=/home/ec2-user/COPHUB/SARA-CLIENT
+
+##
+# Client configuration
+##
+CLIENT_ENDPOINT_RESET_PASSWORD=$SERVER_PROTOCOL://$SARA_SERVER_URL/sara.client/#/resetPassword
+CLIENT_ENDPOINT_HTML_SEARCH_URL=$SERVER_PROTOCOL://$SARA_SERVER_URL/sara.client/#/search
+
+##
+# Copernicus data repository
+# The DATA_ROOT_PATH is the absolute path to the Copernicus directory
+# The SARA_DATA_URL is the alias name in nginx to the DATA_ROOT_PATH
+##
+# WARNING ! The trailing "/" is mandatory
+SARA_DATA_URL=/data/
+DATA_ROOT_PATH=/home/ec2-user/AOHUB/SARA/AO/
+
+##
+# resto/itag configuration
+##
+POSTGRESQL_DATA_DIRECTORY=/home/ec2-user/COPHUB/COPHUB-DB/
+##
+SARA_DB_HOST=
+SARA_DB_NAME=resto
+SARA_DB_SCHEMA_NAME=resto
+ITAG_DB_HOST=localhost
+
+# CentOS 6 comes with PHP 5.3.3 - bcrypt cannot be used 
+USE_BCRYPT=YES
+UPLOAD_DIRECTORY=/home/ec2-user/AOHUB/tmp/resto_uploads
+
+##
+# Admin and database users configuration
+# [WARNING] Names should be leaved untouched, but password should definitively be changed for security reason
+##
+
+DB_SUPERUSER=postgres
+RESTO_USER=resto
+RESTO_PASSWORD=resto
+ITAG_USER=itag
+ITAG_PASSWORD=itag
+RESTO_ADMIN_USER=admin
+RESTO_ADMIN_PASSWORD=admin
+
+# The passphrase is used to encrypt token
+PASSPHRASE=thisisapassphrase
+
+# Directory where itag data are downloaded during installation
+# This directory should be removed after iTag installation
+ITAG_DIR=/tmp/itag
+
+##
+# Email configuration 
+# Used by resto to send registration confirmation and reset password link
+##
+CONTACT_NAME=SARA
+CONTACT_EMAIL=joshua.sixsmith@ga.gov.au
+
+# Timezone
+TIMEZONE=Australia/Sydney
+
+WWW_USER=nginx:nginx
+WWW_STREAM_METHOD=nginx
+
+######################################################
+# UNUSUED FOR SARA - JUST LEAVE BELOW VALUES UNTOUCHED
+#######################################################
+SMTP_HOST=xxx.xxxx
+SMTP_PORT=465
+SMTP_SECURE_PROTOCOL=ssl
+SMTP_USER=admin@snapplanet.io
+SMTP_PASSWORD=password
