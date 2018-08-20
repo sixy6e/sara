@@ -1,6 +1,6 @@
 #! /bin/bash
 #
-# SARA - Sentinel Australia Regional Access
+# SARA - Sentinel Australasia Regional Access
 #
 # Deployment script
 #
@@ -18,7 +18,7 @@ PWD=`pwd`
 SRC_DIR=`pwd`
 function showUsage {
     echo ""
-    echo "   SARA - Sentinel Australia Regional Access server deployment"
+    echo "   SARA - Sentinel Australasia Regional Access server deployment"
     echo ""
     echo "   Usage $0 [options]"
     echo ""
