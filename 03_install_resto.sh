@@ -1,6 +1,6 @@
 #! /bin/bash
 #
-# SARA - Sentinel Australia Regional Access
+# SARA - Sentinel Australasia Regional Access
 # 
 # resto installation script
 #
@@ -18,7 +18,7 @@ SRC_DIR="${0%/*}"
 
 function showUsage {
     echo ""
-    echo "   SARA - Sentinel Australia Regional Access resto installation"
+    echo "   SARA - Sentinel Australasia Regional Access resto installation"
     echo ""
     echo "   Usage $0 [options]"
     echo ""
