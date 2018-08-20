@@ -11,7 +11,7 @@
     "date.min": "Date min",
     "date.max": "Date max",
     
-    "index.title.sara" : "Sentinel Australia Regional Access",
+    "index.title.sara" : "Sentinel Australasia Regional Access",
     
     "cart.checkout": "Checkout",
     "cart.myCart": "My cart",
@@ -60,7 +60,7 @@
     "help.download.tools.text" : "Some tools to make products download easier",
   
     "home.title" : "SaRa",
-    "home.subtitle" : "Sentinel Australia Regional Access",
+    "home.subtitle" : "Sentinel Australasia Regional Access",
     "home.register" : "Register for SARA",
     "home.search.example" : "Search example TODO",
     "home.search.hint" : "Search...",

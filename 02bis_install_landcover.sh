@@ -1,6 +1,6 @@
 #! /bin/bash
 #
-# SARA - Sentinel Australia Regional Access
+# SARA - Sentinel Australasia Regional Access
 # 
 # itag landcover installation script
 #
@@ -13,7 +13,7 @@ PWD=`pwd`
 
 function showUsage {
     echo ""
-    echo "   SARA - Sentinel Australia Regional Access itag landcover installation"
+    echo "   SARA - Sentinel Australasia Regional Access itag landcover installation"
     echo ""
     echo "   Usage $0 [options]"
     echo ""

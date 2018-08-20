@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# SARA - Sentinel Australia Regional Access
+# SARA - Sentinel Australasia Regional Access
 # 
 # Installation script
 #
@@ -12,7 +12,7 @@
 #CONFIG=config
 function showUsage {
     echo ""
-    echo "   SARA - Sentinel Australia Regional Access packages installation"
+    echo "   SARA - Sentinel Australasia Regional Access packages installation"
     echo ""
     echo "   Usage $0 [options]"
     echo ""

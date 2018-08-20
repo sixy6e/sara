@@ -1,6 +1,6 @@
 #! /bin/bash
 #
-# SARA - Sentinel Australia Regional Access
+# SARA - Sentinel Australasia Regional Access
 # 
 # itag installation script
 #
@@ -14,7 +14,7 @@ SRC_DIR=`pwd`
 
 function showUsage {
     echo ""
-    echo "   SARA - Sentinel Australia Regional Access itag installation"
+    echo "   SARA - Sentinel Australasia Regional Access itag installation"
     echo ""
     echo "   Usage $0 [options]"
     echo ""

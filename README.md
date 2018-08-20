@@ -1,8 +1,8 @@
-# SARA - Sentinel Australia Regional Access
+# SARA - Sentinel Australasia Regional Access
 
 ## Description
 
-The Sentinel Australia Regional Access (SARA) is the data access portal for Australian Copernicus Regional Data Hub. It provides free access to data from all Sentinel satellites for the South-East Asia and South Pacific region.
+The Sentinel Australasia Regional Access (SARA) is the data access portal for Australasian Copernicus Regional Data Hub. It provides free access to data from all Sentinel satellites for the South-East Asia and South Pacific region.
 This repository contains the codebase for SARA, including customized installations of resto, itag and rocket.
 
 
