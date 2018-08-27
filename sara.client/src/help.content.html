@@ -13,7 +13,7 @@
 
 <h3 id="auscophub">Aus Copernicus Hub</h3>
 
-<p>A Python api has been developed by consotrium members and other parties for the use and management of the Australasian Regional Copernicus Hub. The source code repository can be found at <a href="https://bitbucket.org/chchrsc/auscophub/overview">auscophub</a>, and package information at <a href="https://auscophub.readthedocs.io/en/latest/">readthedocs</a>. <br>
+<p>A Python api has been developed by consortium members and other parties for the use and management of the Australasian Regional Copernicus Hub. The source code repository can be found at <a href="https://bitbucket.org/chchrsc/auscophub/overview">auscophub</a>, and package information at <a href="https://auscophub.readthedocs.io/en/latest/">readthedocs</a>. <br>
 Information regarding the sara module can be found at <a href="https://auscophub.readthedocs.io/en/latest/auscophub_saraclient.html">auscophub sara client module</a>.
 </p>
 
@@ -30,6 +30,13 @@ auscophub_searchSara.py -q "box=148.0,-36.0,150.0,-35.0" --sentinel 2 -q "startD
 
 <p>The generated curl script from the above example doesn't have the required user authentication. To include the necessary user authentication use the --curloptions parameter argument, i.e.<br>
 --curloptions "-u username:password"
+</p>
+
+<p>The available query parameters for each collection can be found at:
+<a href="http://copernicus.nci.org.au/sara.server/1.0/api/collections/describe.xml">All Collections</a> <br>
+<a href="http://copernicus.nci.org.au/sara.server/1.0/api/collections/S1/describe.xml">S1</a> <br>
+<a href="http://copernicus.nci.org.au/sara.server/1.0/api/collections/S2/describe.xml">S2</a> <br>
+<a href="http://copernicus.nci.org.au/sara.server/1.0/api/collections/S3/describe.xml">S3</a> <br>
 </p>
 
 
@@ -93,16 +100,9 @@ With cURL, <br>
 </tbody></table>
 
 <br>
-<p>Accpeted query parameters are described within <a href="/sara.server/1.0/api/collections/describe.xml">OpenSearch Description file</a> 
+<p>Accepted query parameters are described within <a href="/sara.server/1.0/api/collections/describe.xml">OpenSearch Description file</a> 
 <br>
 or for each collection in http://copernicus.nci.org.au/sara.server/1.0/api/collections/{collection}/describe.xml </p>
-
-<p>Available query parameters:</p>
-<p>
-<a href="http://copernicus.nci.org.au/sara.server/1.0/api/collections/describe.xml">All Collections</a> <br>
-<a href="http://copernicus.nci.org.au/sara.server/1.0/api/collections/S1/describe.xml">S1</a> <br>
-<a href="http://copernicus.nci.org.au/sara.server/1.0/api/collections/S2/describe.xml">S2</a> <br>
-<a href="http://copernicus.nci.org.au/sara.server/1.0/api/collections/S3/describe.xml">S3</a> <br>
 
 <p>The following special query parameters can be used to modify the query but are not specified within the OpenSearch Description file</p>
 
