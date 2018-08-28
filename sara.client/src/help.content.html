@@ -10,16 +10,50 @@
 
 <p>User registration is required for downloading the data. Information collected during the registration will be used for statistical analysis of usage patterns. </p>
 
+<h3 id="current-collections">Current Collections</h3>
 
-
-<h3 id="batch-download">Batch Download</h3>
-
-<p>When logged in, search results can be downloaded directly or added to cart for batch download. <br>
-Cart content is downloaded as a metalink (.meta4) file. A metalink file is a simple XML file containing resource urls and checksums. The file can be used with download managers such as the <a href="https://addons.mozilla.org/en-US/firefox/addon/downthemall/">DownThemAll!</a> addon for Firefox and the <a href="https://aria2.github.io/">aria2</a> command line utility.
-<br>
-Each url in the metalink file contains an authentication token that is valid for 24 hours from generation.
+<p>The current available collections are available in either <a href="https://copernicus.nci.org.au/sara.server/1.0/collections.xml">xml</a> or <a href="https://copernicus.nci.org.au/sara.server/1.0/collections.json">json</a>.
 </p>
 
+
+<h3 id="auscophub">Aus Copernicus Hub</h3>
+
+<p>A Python api has been developed by consortium members and other parties for the use and management of the Australasian Regional Copernicus Hub. The source code repository can be found at <a href="https://bitbucket.org/chchrsc/auscophub/overview">auscophub</a>, and package information at <a href="https://auscophub.readthedocs.io/en/latest/">readthedocs</a>. <br>
+Information regarding the sara module can be found at <a href="https://auscophub.readthedocs.io/en/latest/auscophub_saraclient.html">auscophub sara client module</a>.
+</p>
+
+
+<h3 id="cli-batch-download">CLI Batch Download</h3>
+
+<p>
+The auscophub Python module provides an easy to use interface for querying the data and returning a curl script, a url listing, or even a GeoJSON features file for viewing in QGIS.
+</p>
+
+<p>An example of use is as follows:<br>
+auscophub_searchSara.py -q "box=148.0,-36.0,150.0,-35.0" --sentinel 2 -q "startDate=2018-08-20" -q "completionDate=2018-08-26" --curlscript curl-script.bash --jsonfeaturesfile feature-file.geojson <br>
+</p>
+
+<p>The generated curl script from the above example doesn't have the required user authentication. To include the necessary user authentication use the --curloptions parameter argument, i.e.<br>
+--curloptions "-u username:password"
+</p>
+
+<p>The available query parameters for each collection can be found at: <br>
+<a href="http://copernicus.nci.org.au/sara.server/1.0/api/collections/S1/describe.xml">S1</a> <br>
+<a href="http://copernicus.nci.org.au/sara.server/1.0/api/collections/S2/describe.xml">S2</a> <br>
+<a href="http://copernicus.nci.org.au/sara.server/1.0/api/collections/S3/describe.xml">S3</a> <br>
+<a href="http://copernicus.nci.org.au/sara.server/1.0/api/collections/describe.xml">All Collections</a> <br>
+</p>
+
+
+<h3 id="gui-batch-download">GUI Batch Download</h3>
+
+<p>When logged in, search results can be downloaded directly or added to the cart for batch download. <br>
+Cart content is downloaded as a metalink (.meta4) file. A metalink file is a simple XML file containing resource urls and checksums. The file can be used with download managers such as the <a href="https://addons.mozilla.org/en-US/firefox/addon/downthemall/">DownThemAll!</a> addon for Firefox and the <a href="https://aria2.github.io/">aria2</a> command line utility.
+<br>
+<br>
+An <a href="https://docs.google.com/document/d/1nfxWJe2YdXrcdko595DOwlsfPlj83WuGpdPvDPwYrwo/edit?usp=sharing">introductory user guide</a> for bulk downloads is now available. It contains a step by step example of querying SARA using the GUI interface, and downloading the results using aria2 and <a href="https://github.com/ziahamza/webui-aria2">webui-aria2</a> utilities. <br>
+Each url in the metalink file contains an authentication token that is valid for 24 hours from generation. <br>
+</p>
 
 
 <h3 id="application-program-interfaces-api">Application Program Interfaces (API)</h3>
@@ -72,11 +106,11 @@ With cURL, <br>
 </tbody></table>
 
 <br>
-<p>Accpeted query parameters are described within <a href="/sara.server/1.0/api/collections/describe.xml">OpenSearch Description file</a> 
+<p>Accepted query parameters are described within <a href="/sara.server/1.0/api/collections/describe.xml">OpenSearch Description file</a> 
 <br>
 or for each collection in http://copernicus.nci.org.au/sara.server/1.0/api/collections/{collection}/describe.xml </p>
 
-<p>Following special query parameters can be used to modify the query but are not specified within the OpenSearch Description file</p>
+<p>The following special query parameters can be used to modify the query but are not specified within the OpenSearch Description file</p>
 
 <table>
 <thead>
