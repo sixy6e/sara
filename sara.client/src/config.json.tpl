@@ -13,7 +13,7 @@
       14568286.15,
       -3033021.27
     ],
-    "zoom": 4,
+    "zoom": 3,
     "background": {
       "source": "OSM"
     }

@@ -8,10 +8,13 @@
 # Date   : 2017.02.19
 #
 #
+
+set -eu
+set -o pipefail
+
 #CONFIG=config
 FORCE=NO
-WWW_USER=www-data:www-data
-SRC_DIR=`pwd`
+SRC_DIR="${0%/*}"
 
 function showUsage {
     echo ""
@@ -64,6 +67,13 @@ fi
 # Source config file
 . ${CONFIG}
 
+DB_HOST_OPT_PSQL=
+DB_HOST_OPT_RESTO=
+if [ -n "${SARA_DB_HOST}" -a "${SARA_DB_HOST}" != "localhost" ] ; then
+  DB_HOST_OPT_PSQL="-h ${SARA_DB_HOST}"
+  DB_HOST_OPT_RESTO="-H ${SARA_DB_HOST}"
+fi
+
 echo "###########################"
 echo "# Install resto database   "
 echo "###########################"
@@ -71,16 +81,16 @@ echo "###########################"
 echo "====> Install ${SARA_DB_NAME} database"
 if [ "${FORCE}" == "YES" ]
 then
-  ${SRC_DIR}/resto/_install/installDB.sh -d ${SARA_DB_NAME} -S ${SARA_DB_SCHEMA_NAME} -u ${RESTO_USER} -p ${RESTO_PASSWORD} -s ${DB_SUPERUSER} -F
+  ${SRC_DIR}/resto/_install/installDB.sh -d ${SARA_DB_NAME} -S ${SARA_DB_SCHEMA_NAME} -u ${RESTO_USER} -p ${RESTO_PASSWORD} -s ${DB_SUPERUSER} ${DB_HOST_OPT_RESTO} -F
 else
-  ${SRC_DIR}/resto/_install/installDB.sh -d ${SARA_DB_NAME} -S ${SARA_DB_SCHEMA_NAME} -u ${RESTO_USER} -p ${RESTO_PASSWORD} -s ${DB_SUPERUSER}
+  ${SRC_DIR}/resto/_install/installDB.sh -d ${SARA_DB_NAME} -S ${SARA_DB_SCHEMA_NAME} -u ${RESTO_USER} -p ${RESTO_PASSWORD} -s ${DB_SUPERUSER} ${DB_HOST_OPT_RESTO}
 fi
 
 echo " ==> Update st_splitdateline function"
-${SRC_DIR}/sara.server/update_splitdateline.sh -d ${SARA_DB_NAME} -u ${DB_SUPERUSER}
+${SRC_DIR}/sara.server/update_splitdateline.sh -d ${SARA_DB_NAME} -u ${DB_SUPERUSER} ${DB_HOST_OPT_RESTO}
 
 echo "====> Update database for Sentinel-3"
-psql -U ${DB_SUPERUSER} -d ${SARA_DB_NAME} << EOF
+psql -U ${DB_SUPERUSER} ${DB_HOST_OPT_PSQL} -d ${SARA_DB_NAME} << EOF
 INSERT INTO ${SARA_DB_SCHEMA_NAME}.keywords (name, value, lang, type) VALUES ('s3', 'S3A|S3B','**', 'platform');
 INSERT INTO ${SARA_DB_SCHEMA_NAME}.keywords (name, value, lang, type) VALUES ('s3A', 'S3A','**', 'platform');
 INSERT INTO ${SARA_DB_SCHEMA_NAME}.keywords (name, value, lang, type) VALUES ('s3B', 'S3B','**', 'platform');
@@ -90,12 +100,13 @@ INSERT INTO ${SARA_DB_SCHEMA_NAME}.keywords (name, value, lang, type) VALUES ('o
 INSERT INTO ${SARA_DB_SCHEMA_NAME}.keywords (name, value, lang, type) VALUES ('c-sar', 'C-SAR','**','instrument');
 --DELETE FROM ${SARA_DB_SCHEMA_NAME}.keywords where type='landuse';
 EOF
+
 if [ "${USE_BCRYPT}" == "YES" ]
 then
   echo "====> Create admin user ${RESTO_ADMIN_USER} **WITH** bcrypt hashing"
-  ${SRC_DIR}/resto/_install/createAdminUser.sh -u ${RESTO_ADMIN_USER} -p ${RESTO_ADMIN_PASSWORD} -d ${SARA_DB_NAME} -S ${SARA_DB_SCHEMA_NAME} -s ${DB_SUPERUSER} -B
+  ${SRC_DIR}/resto/_install/createAdminUser.sh -u ${RESTO_ADMIN_USER} -p ${RESTO_ADMIN_PASSWORD} -d ${SARA_DB_NAME} -S ${SARA_DB_SCHEMA_NAME} -s ${DB_SUPERUSER} ${DB_HOST_OPT_RESTO} -B
 else
   echo "====> Create admin user ${RESTO_ADMIN_USER} **WITHOUT** bcrypt hashing, but **WITH** salt in crypt"
-  ${SRC_DIR}/resto/_install/createAdminUser.sh -u ${RESTO_ADMIN_USER} -p ${RESTO_ADMIN_PASSWORD} -d ${SARA_DB_NAME} -S ${SARA_DB_SCHEMA_NAME} -s ${DB_SUPERUSER} -C
+  ${SRC_DIR}/resto/_install/createAdminUser.sh -u ${RESTO_ADMIN_USER} -p ${RESTO_ADMIN_PASSWORD} -d ${SARA_DB_NAME} -S ${SARA_DB_SCHEMA_NAME} -s ${DB_SUPERUSER} ${DB_HOST_OPT_RESTO} -C
 fi
 

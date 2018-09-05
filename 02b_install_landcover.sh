@@ -8,6 +8,10 @@
 # Date   : 2017.07.28
 #
 #
+
+set -eu
+set -o pipefail
+
 #CONFIG=config
 PWD=`pwd`
 
@@ -57,7 +61,12 @@ fi
 # Source config file
 . ${CONFIG}
 
-LANDCOVER_DATA=${ITAG_DIR}/data
+DB_HOST_OPT=
+if [ -n "${ITAG_DB_HOST}" -a "${ITAG_DB_HOST}" != "localhost" ] ; then
+  DB_HOST_OPT="-h ${ITAG_DB_HOST}"
+fi
+
+LANDCOVER_DATA=${ITAG_DATA}
 LANDCOVER_SQL="2016.11.09-itag_landcover_curated.sql"
 
 if [ -d "${LANDCOVER_DATA}" ];
@@ -83,13 +92,13 @@ else
   tar -xvzf ${LANDCOVER_SQL}.tgz
 fi
 
-psql -d itag -U ${DB_SUPERUSER} << EOF
+psql -d itag -U ${DB_SUPERUSER} ${DB_HOST_OPT} << EOF
 DELETE FROM datasources.landcover;
 EOF
 
-psql -d itag -U ${DB_SUPERUSER} -f ${LANDCOVER_SQL}
+psql -d itag -U ${DB_SUPERUSER} -f ${LANDCOVER_SQL} ${DB_HOST_OPT}
 
-psql -d itag -U ${DB_SUPERUSER} << EOF
+psql -d itag -U ${DB_SUPERUSER} ${DB_HOST_OPT} << EOF
 ALTER TABLE landcover SET SCHEMA datasources;
 GRANT SELECT on datasources.landcover to itag;
 GRANT SELECT,UPDATE ON datasources.landcover_ogc_fid_seq TO itag;

@@ -1,4 +1,8 @@
 #!/bin/bash
+
+set -eu
+set -o pipefail
+
 function showUsage {
     echo ""
     echo "   resto config.php generator for SARA - Sentinel Australia Regional Access"
@@ -12,6 +16,7 @@ function showUsage {
 }
 
 # Parsing arguments
+CONFIG=
 while [[ $# > 0 ]]
 do
 	key="$1"
@@ -65,7 +70,7 @@ return array(
         'debug' => false,
         'timezone' => '${TIMEZONE}',
         'protocol' => '${SERVER_PROTOCOL}',
-        'storeQuery' => true,
+        'storeQuery' => array('download'),
         'sharedLinkDuration' => 86400,
         'tokenDuration' => 604800,
         'passphrase' => '${PASSPHRASE}',
@@ -74,11 +79,10 @@ return array(
         'htmlSearchUrl' => '${CLIENT_ENDPOINT_HTML_SEARCH_URL}',
         'uploadDirectory' => '${UPLOAD_DIRECTORY}',
         'streamMethod' => '${WWW_STREAM_METHOD}',
+        'redirectExternalDownload' => ${REDIRECT_EXTERNAL_DOWNLOAD},
         'userAutoValidation' => true,
         'corsWhiteList' => array(
-            'null',
-            'localhost',
-            'localhost:8100'
+            '${SARA_SERVER_URL}',
         )
     ),
     'database' => array(
@@ -89,7 +93,6 @@ return array(
         'resultsPerPage' => 20,
       	'sortKeys' => array('startdate'),
         'hashing' => 'crypt',
-        'hashsalt' => '${RESTO_SALT}',
         'user' => '${RESTO_USER}',
         'password' => '${RESTO_PASSWORD}'
     ),
@@ -152,8 +155,15 @@ return array(
                         'password' => '${ITAG_PASSWORD}'
                     ),
                     'taggers' => array(
-                        'Political' => array(),
-                        'LandCover' => array()
+EOF
+
+for tagger in ${ITAG_TAGGERS} ; do
+cat << EOF
+                        '${tagger}' => array(),
+EOF
+done
+
+cat << EOF
                     )
                 )
             )
