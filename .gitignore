@@ -5,3 +5,4 @@
 /config.nci
 /sara.client/src/config.json
 /sara.server/collections/SARA-S*.json
+/sara.server/collections/SARA-S*.json.ok

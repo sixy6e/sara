@@ -1,19 +1,20 @@
 #! /bin/bash
 #
 # SARA - Sentinel Australasia Regional Access
-# 
 # Deployment script
 #
 # Author : Jérôme Gasperi (https://github.com/jjrom)
 # Date   : 2017.02.19
 #
 #
-#CONFIG=config
+
+set -eu
+set -o pipefail
+
+CONFIG=
 FORCE=NO
-WWW_USER=nginx:nginx
 PWD=`pwd`
 SRC_DIR=`pwd`
-LOCALHOST=localhost
 function showUsage {
     echo ""
     echo "   SARA - Sentinel Australasia Regional Access server deployment"
@@ -88,36 +89,12 @@ cp -R ${SRC_DIR}/sara.server/Models/*.php ${SARA_SERVER_ENDPOINT}/include/resto/
 
 echo " ==> Use ${CONFIG} file to generate ${SARA_SERVER_ENDPOINT}/include/config.php";
 ${SRC_DIR}/sara.server/generate_config.sh -C ${CONFIG} > ${SARA_SERVER_ENDPOINT}/include/config.php
-chmod 0600 ${SARA_SERVER_ENDPOINT}/include/config.php
 
-echo " ==> Set ${SARA_SERVER_ENDPOINT} rights to ${WWW_USER}"
-chown -R ${WWW_USER} ${SARA_SERVER_ENDPOINT}
-
-echo " ==> Update property mappings for collections"
-
-# change JSON file properties
-for i in {1..3};do 
-	fileName=${SRC_DIR}/sara.server/collections/"S$i.json"; 
-        outName=${SRC_DIR}/sara.server/collections/"SARA-S$i.json";
-	awk -v SEN=$i -v PATH=$DATA_ROOT_PATH -v PROTO=$SERVER_PROTOCOL -v SERVER=$SARA_SERVER_URL '{if((/"quicklook"/)||(/"thumbnail"/)||(/"resource"/)){if(/"resource"/){print "\t\"resource\" : \""PATH"Sentinel-"SEN"{:resource:}/{:productIdentifier:}.zip\""}; if(/"quicklook"/){print "\t\"quicklook\" : \""PROTO"://"SERVER"/data/Sentinel-"SEN"{:resource:}/{:productIdentifier:}.png\","}; if(/"thumbnail"/){print "\t\"thumbnail\" : \""PROTO"://"SERVER"/data/Sentinel-"SEN"{:resource:}/{:productIdentifier:}.png\","};}else{print $0;}}' $fileName > $outName; done
-
-if [ "${SERVER_PROTOCOL}" == "https" ]
-then
-    curlcmd="curl -k"
-else
-    curlcmd="curl"
-fi
-
-echo " ==> Install S1 collection"
-$curlcmd -X POST -H "Content-Type: application/json" -d @${SRC_DIR}/sara.server/collections/SARA-S1.json ${SERVER_PROTOCOL}://${RESTO_ADMIN_USER}:${RESTO_ADMIN_PASSWORD}@${LOCALHOST}${SARA_SERVER_SUB}${SARA_SERVER_VERSION_ENDPOINT}/collections
-echo ""
-
-echo " ==> Install S2 collection"
-$curlcmd -X POST -H "Content-Type: application/json" -d @${SRC_DIR}/sara.server/collections/SARA-S2.json ${SERVER_PROTOCOL}://${RESTO_ADMIN_USER}:${RESTO_ADMIN_PASSWORD}@${LOCALHOST}${SARA_SERVER_SUB}${SARA_SERVER_VERSION_ENDPOINT}/collections
-echo ""
-
-echo " ==> Install S3 collection"
-$curlcmd -X POST -H "Content-Type: application/json" -d @${SRC_DIR}/sara.server/collections/SARA-S3.json ${SERVER_PROTOCOL}://${RESTO_ADMIN_USER}:${RESTO_ADMIN_PASSWORD}@${LOCALHOST}${SARA_SERVER_SUB}${SARA_SERVER_VERSION_ENDPOINT}/collections
-echo ""
+echo " ==> Set ${SARA_SERVER_ENDPOINT} file permissions"
+chmod -R a+rX ${SARA_SERVER_ENDPOINT}
+chown -R root:root ${SARA_SERVER_ENDPOINT}
+chmod 0640 ${SARA_SERVER_ENDPOINT}/include/config.php
+chgrp ${WWW_GROUP} ${SARA_SERVER_ENDPOINT}/include/config.php
+selinuxenabled && restorecon -R ${SARA_SERVER_ENDPOINT}
 
 echo " Done !"

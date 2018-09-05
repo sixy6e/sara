@@ -63,7 +63,8 @@ function HomeController(rocketServices, rocketCache, restoCollectionsAPI) {
      * Get latest acquisitions
      */
     restoCollectionsAPI.search({
-            cacheName: 'latest'
+            cacheName: 'latest',
+            collection: 'S2'
         },
         function (data) {
             self.features = data.features;

@@ -1,4 +1,8 @@
 #!/bin/bash
+
+set -eu
+set -o pipefail
+
 function showUsage {
     echo ""
     echo "   Update ST_SplitDateLine function to work with Sentinel-1/2/3"
@@ -7,12 +11,16 @@ function showUsage {
     echo ""
     echo "      -u | --user : superuser for database"
     echo "      -d | --database: database to install function"
+    echo "      -H | --host: database server (if not local)"
     echo "      -h | --help : show this help"
     echo ""
     echo ""
 }
 
 # Parsing arguments
+SUPERUSER=
+DB=
+HOSTNAME_OPT=
 while [[ $# > 0 ]]
 do
         key="$1"
@@ -25,7 +33,12 @@ do
         -d|--database)
             DB="$2"
             shift # past argument
-            ;;   
+            ;;
+        -H|--host)
+            [ "$2" != "" ] || { showUsage; exit 1; }
+            HOSTNAME_OPT="-h $2"
+            shift # past argument
+            ;;
         -h|--help)
             showUsage
             exit 0
@@ -47,9 +60,9 @@ then
     exit 0
 fi
 
-psql -d $DB -U $SUPERUSER << EOF
+psql -d $DB -U $SUPERUSER $HOSTNAME_OPT << EOF
 
-CREATE OR REPLACE FUNCTION ST_SplitDateLine(geom_in geometry) 
+CREATE OR REPLACE FUNCTION ST_SplitDateLine(geom_in geometry)
 RETURNS geometry AS \$\$
 DECLARE
   multi_geom_out GEOMETRY;
@@ -64,7 +77,7 @@ DECLARE
   yp FLOAT;
   xoffset FLOAT :=0;
   -- Maximum eastward(westward) longitude change when going eastward(westward); seems to work for Sentinel-3
-  -- Also used to check if a change-in-direction, close to either north or south pole, has already occurred 
+  -- Also used to check if a change-in-direction, close to either north or south pole, has already occurred
   xgaplimit FLOAT :=60;
   -- Sentinel-3 polygon crossing north pole starts eastward; a polygon crossing south pole starts westward
   eastward INTEGER :=0;
@@ -83,13 +96,13 @@ BEGIN
   -- Sentinel-3 large polygons ordered west to east (CCW), close to north pole;
   -- Sentinel-3 large polygons ordered east to west (CCW), close to south pole;
 
-  -- Extract vertices from polygon or multipolygons 
+  -- Extract vertices from polygon or multipolygons
   SELECT INTO multi_line_geom ST_Boundary(geom_in);
 
   -- Loop through multi polygons
   For pp IN 1 .. ST_NumGeometries(multi_line_geom) LOOP
 
-    SELECT INTO line_geom ST_GeometryN(multi_line_geom, pp); 
+    SELECT INTO line_geom ST_GeometryN(multi_line_geom, pp);
     lastx := ST_X(ST_PointN(line_geom,1));
     lasty := ST_Y(ST_PointN(line_geom,1));
     -- reset values
@@ -118,7 +131,7 @@ BEGIN
       IF firstgap and ((xp - lastx > xgaplimit and eastward <0) or (lastx - xp > xgaplimit and eastward >0)) THEN
         firstgap := FALSE;
       -- If there's no big gap yet
-      ELSIF (xp - lastx > xgaplimit and eastward >0 and firstgap) THEN 
+      ELSIF (xp - lastx > xgaplimit and eastward >0 and firstgap) THEN
         xp := xp -360;
         xoffset := xoffset - 360;
         firstgap := FALSE;
@@ -132,7 +145,7 @@ BEGIN
       -- Use the larger latitude to avoid self-intersection
       IF (ABS(xp - lastx) > 180) THEN
         insertx := (xp + lastx)/2;
-        IF yp > 0 THEN 
+        IF yp > 0 THEN
           inserty := GREATEST(yp, lasty, 90.);
         ELSE
           inserty := LEAST(yp, lasty, -90.);
@@ -161,7 +174,7 @@ BEGIN
       lastx := xp;
       lasty := yp;
     END LOOP;
-    
+
     -- If need to, add the point now at position insertn
     IF insertn > 0 THEN
       SELECT INTO line_geom ST_AddPoint(line_geom, ST_MakePoint(insertx, inserty), insertn);
@@ -170,9 +183,9 @@ BEGIN
     -- Convert back to polygon
     -- convert to text first to force consistent rounding in start and end (closed)
     SELECT INTO geom_out ST_MakePolygon(ST_GeomFromEWKT(ST_AsEWKT(line_geom)));
-  
+
     -- Make sure nothing goes below -180
-    IF ST_Xmin(geom_out) < -180 THEN    
+    IF ST_Xmin(geom_out) < -180 THEN
       SELECT INTO geom_out ST_Translate(geom_out, 360, 0);
     END IF;
 
@@ -186,7 +199,7 @@ BEGIN
     IF ST_IsCollection(geom_out) THEN
       SELECT INTO geom_out ST_CollectionExtract(geom_out,3);
     END IF;
-     
+
     -- Support multipolygon
     IF pp = 1 THEN
       SELECT INTO multi_geom_out geom_out;

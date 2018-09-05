@@ -1,15 +1,17 @@
 #! /bin/bash
 #
 # SARA - Sentinel Australasia Regional Access
-# 
 # Deployment script
 #
 # Author : Jérôme Gasperi (https://github.com/jjrom)
 # Date   : 2017.02.19
 #
 #
-#CONFIG=config
-WWW_USER=nginx:nginx
+
+set -eu
+set -o pipefail
+
+CONFIG=
 PWD=`pwd`
 SRC_DIR=`pwd`
 function showUsage {
@@ -74,11 +76,9 @@ grunt --base sara.client/ --gruntfile sara.client/Gruntfile.js build
 
 cp -a sara.client/dist/. ${SARA_CLIENT_TARGET_DIR}
 
-echo " ==> Set ${SARA_CLIENT_TARGET_DIR} rights to ${WWW_USER}"
-chown -R ${WWW_USER} ${SARA_CLIENT_TARGET_DIR}
+echo " ==> Set ${SARA_CLIENT_TARGET_DIR} file permissions"
+chmod -R a+rX ${SARA_CLIENT_TARGET_DIR}
+chown -R root:root ${SARA_CLIENT_TARGET_DIR}
 selinuxenabled && restorecon -R ${SARA_CLIENT_TARGET_DIR}
 
 echo " Done !"
-
-
-
