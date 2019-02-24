@@ -1,0 +1,26 @@
+{
+    "name": "S5P",
+    "model": "RestoModel_S5P",
+    "status": "public",
+    "rights":{
+        "download":1,
+        "visualize":1
+    },
+    "osDescription": {
+        "en": {
+            "ShortName": "Sentinel-5P",
+            "LongName": "Sentinel-5P",
+            "Description": "The Sentinel-5 Precursor mission is a joint initiative between ESA and the Kingdom of the Netherlands, represented by the Netherlands Space Office NSO. The mission consists of one satellite carrying the TROPOspheric Monitoring Instrument (TROPOMI) UV-VIS-NIR-SWIR instrument.  The main objective of the Sentinel-5P mission is to perform atmospheric measurements, with high spatio-temporal resolution, relating to air quality, climate forcing, ozone and UV radiation.  The mission is intended to reduce gaps in the availability of global atmospheric data products between SCIAMACHY/Envisat (which ended in April 2012), the OMI/AURA mission and the future SENTINEL-5 and SENTINEL-4 missions.",
+            "Tags": "ESA sentinel5P atmospheric",
+            "Developer": "Geoscience Australia",
+            "Contact": "earth.observation@ga.gov.au",
+            "Query": "Australia",
+            "Attribution": "Copernicus Sentinel data 2018"
+        }
+    },
+    "propertiesMapping":{
+        "quicklook" : "http://copernicus.nci.org.au/data/Sentinel-5P{:resource:}/{:productIdentifier:}.png",
+        "thumbnail" : "http://copernicus.nci.org.au/data/Sentinel-5P{:resource:}/{:productIdentifier:}.png",
+        "resource" : "/g/data3/fj7/Copernicus/Sentinel-5P{:resource:}/{:productIdentifier:}.zip"
+    }
+}
